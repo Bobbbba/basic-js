@@ -26,7 +26,8 @@ function dateSample(sampleActivity) {
   if (
     ageArcheologicalFind >= 1 &&
     ageArcheologicalFind !== Infinity &&
-    sampleActivity !== "number"
+    typeof sampleActivity === 'string' 
+    
   ) {
     return ageArcheologicalFind;
   }
