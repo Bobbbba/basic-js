@@ -12,7 +12,11 @@ const { NotImplementedError } = require("../extensions/index.js");
  *
  */
 function getSeason(date) {
-  if (!!date && !isNaN(Date.parse(date))) {
+    if (!date) {
+    return "Unable to determine the time of year!";
+  } else if (isNaN(date.getTime?.())) {
+    throw new Error("Invalid date!");
+  } else if (date instanceof Date) {
     let M = date.getMonth();
     if (M === 0 || M === 1 || M === 11) {
       return "winter";
@@ -21,10 +25,9 @@ function getSeason(date) {
     } else if (M === 5 || M === 6 || M === 7) {
       return "summer";
     } else if (M === 8 || M === 9 || M === 10) {
-      return /autumn|fall/;
+      return "autumn";
     }
   }
-  throw new Error("Invalid date!");
 }
 
 module.exports = {
