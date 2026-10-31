@@ -1,4 +1,4 @@
-const { NotImplementedError } = require('../lib');
+const { NotImplementedError } = require("../lib");
 
 /**
  * Implement class VigenereCipheringMachine that allows us to create
@@ -20,14 +20,41 @@ const { NotImplementedError } = require('../lib');
  *
  */
 class VigenereCipheringMachine {
-  encrypt() {
-    // Remove line below and write your code here
-    throw new NotImplementedError('Not implemented');
+  constructor(direct = true) {
+    this.direct = direct;
+  }
+  _transform(message, key, sign) {
+    if (message === undefined || key === undefined) {
+      throw new Error("Incorrect arguments!");
+    }
+    const msg = String(message).toUpperCase();
+    const k = String(key).toUpperCase();
+
+    let keyIndex = 0;
+    let result = "";
+
+    for (let i = 0; i < msg.length; i += 1) {
+      const ch = msg[i];
+      const code = ch.charCodeAt(0);
+
+      if (code >= 65 && code <= 90) {
+        const shift = k.charCodeAt(keyIndex % k.length) - 65;
+        const newCode = ((((code - 65 + sign * shift) % 26) + 26) % 26) + 65;
+        result += String.fromCharCode(newCode);
+        keyIndex += 1;
+      } else {
+        result += ch;
+      }
+    }
+    return this.direct ? result : result.split("").reverse().join("");
   }
 
-  decrypt() {
-    // Remove line below and write your code here
-    throw new NotImplementedError('Not implemented');
+  encrypt(message, key) {
+    return this._transform(message, key, +1);
+  }
+
+  decrypt(message, key) {
+    return this._transform(message, key, -1);
   }
 }
 
